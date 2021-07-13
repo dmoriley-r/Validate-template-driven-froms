@@ -1,0 +1,90 @@
+<div class="container">
+  <h1>Validating Template-Driven Forms</h1>
+  <form #myForm="ngForm" (ngSubmit)="handleSubmit(myForm.value)">
+    <!-- alphanumeric + spaces field of specific length -->
+    <div class="form-group">
+      <label>
+        Address
+        <input
+          name="address"
+          type="text"
+          class="form-control"
+          pattern="[A-Za-z0-9\s]{0,20}"
+          ngModel
+        />
+      </label>
+    </div>
+
+    <!-- a non-optional field of specific length -->
+    <div class="form-group">
+      <label>
+        Company
+        <input
+          name="company"
+          type="text"
+          class="form-control"
+          pattern=".{3,15}"
+          required
+          ngModel
+        />
+      </label>
+    </div>
+
+    <!-- a required field -->
+    <div class="form-group">
+      <label>
+        Name
+        <input name="name" type="text" class="form-control" required ngModel />
+      </label>
+    </div>
+
+    <!-- an optional field of a specific length -->
+    <div class="form-group">
+      <label>
+        Nickname
+        <input
+          name="nickname"
+          type="text"
+          class="form-control"
+          pattern=".{3,10}"
+          ngModel
+        />
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label>
+        Phone Number
+        <input
+          name="phone"
+          type="text"
+          class="form-control"
+          maxlength="10"
+          ngModel
+        />
+      </label>
+    </div>
+
+    <!-- the submit button is only enabled when the ngForm object is valid -->
+    <!-- If any of the native HTML5 input validators return false then ngForm will be INVALID.
+    The ngModel directives applied to the inputs are under the ngForm directive and thus part 
+    of its controls structure. So when one of those ngModels is invalid because of a false HTML5
+    validator, it will also change the validity of its parent, in this case the ngForm. -->
+    <button
+      type="submit"
+      class="mt-2 btn btn-success"
+      [disabled]="myForm.status === 'INVALID'"
+    >
+      Submit
+    </button>
+  </form>
+
+  <br />
+
+  <fieldset *ngIf="formData">
+    <legend>Form Results</legend>
+    <p *ngFor="let item of formData | keyvalue">
+      <b class="text-uppercase">{{ item.key }}:</b> {{ item.value }}
+    </p>
+  </fieldset>
+</div>
